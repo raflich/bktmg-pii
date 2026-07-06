@@ -36,12 +36,21 @@ function getTag(title: string) {
   return "Kegiatan";
 }
 
+interface KegiatanEvent {
+  id: string;
+  judul: string;
+  deskripsi: string;
+  fotoUrl: string;
+  linkVideo: string | null;
+  tanggal: Date;
+}
+
 export default async function KegiatanPage() {
-  const events = await prisma.kegiatan.findMany({
+  const events = (await prisma.kegiatan.findMany({
     orderBy: {
       tanggal: "desc",
     },
-  });
+  })) as KegiatanEvent[];
 
   return (
     <>
@@ -55,7 +64,7 @@ export default async function KegiatanPage() {
       <section className="bg-[#FAFAF8] py-16 md:py-24 text-left">
         <div className="max-w-7xl mx-auto px-5 md:px-10">
           <div className="grid md:grid-cols-3 gap-6">
-            {events.map((ev, index) => {
+            {events.map((ev: KegiatanEvent, index: number) => {
               const tag = getTag(ev.judul);
               const isLatest = index === 0;
               const formattedDate = ev.judul.includes("Diskusi Panel & Lokakarya") ? "Berkala" : formatDate(ev.tanggal);

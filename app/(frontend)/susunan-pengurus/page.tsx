@@ -55,18 +55,27 @@ function AvatarRow({ nama }: { nama: string }) {
   );
 }
 
+interface PengurusMember {
+  id: string;
+  nama: string;
+  jabatan: string;
+  kategori: string;
+  fotoUrl: string | null;
+  urutan: number;
+}
+
 export default async function SusunanPengurusPage() {
   // Fetch members from database
-  const allPengurus = await prisma.pengurus.findMany({
+  const allPengurus = (await prisma.pengurus.findMany({
     orderBy: {
       urutan: "asc",
     },
-  });
+  })) as PengurusMember[];
 
-  const pembina = allPengurus.filter((p) => p.kategori === "Pembina");
-  const penasehat = allPengurus.filter((p) => p.kategori === "Penasehat");
-  const inti = allPengurus.filter((p) => p.kategori === "Inti");
-  const muk = allPengurus.filter((p) => p.kategori === "MUK");
+  const pembina = allPengurus.filter((p: PengurusMember) => p.kategori === "Pembina");
+  const penasehat = allPengurus.filter((p: PengurusMember) => p.kategori === "Penasehat");
+  const inti = allPengurus.filter((p: PengurusMember) => p.kategori === "Inti");
+  const muk = allPengurus.filter((p: PengurusMember) => p.kategori === "MUK");
 
   return (
     <>

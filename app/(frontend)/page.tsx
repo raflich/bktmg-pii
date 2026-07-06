@@ -237,12 +237,20 @@ function CTAStrip() {
   );
 }
 
+interface HomeKegiatan {
+  id: string;
+  judul: string;
+  deskripsi: string;
+  fotoUrl: string;
+  tanggal: Date;
+}
+
 export default async function Beranda() {
-  const kegiatan = await prisma.kegiatan.findMany({
+  const kegiatan = (await prisma.kegiatan.findMany({
     orderBy: {
       tanggal: "desc",
     },
-  });
+  })) as HomeKegiatan[];
 
   return (
     <>
