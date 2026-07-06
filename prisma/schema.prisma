@@ -1,0 +1,45 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model KontakMasuk {
+  id          String   @id @default(uuid())
+  namaLengkap String
+  noTelepon   String
+  email       String
+  perusahaan  String?
+  institusi   String?
+  pesan       String   @db.Text
+  createdAt   DateTime @default(now())
+}
+
+model Kegiatan {
+  id        String   @id @default(uuid())
+  judul     String
+  deskripsi String   @db.Text
+  fotoUrl   String
+  linkVideo String?
+  tanggal   DateTime @default(now())
+}
+
+model Pengurus {
+  id       String @id @default(uuid())
+  nama     String
+  jabatan  String
+  kategori String
+  fotoUrl  String?
+  urutan   Int    @default(0)
+}
+
+model InfoInstansi {
+  id        String @id @default(uuid())
+  nama      String
+  alamat    String @db.Text
+  telepon   String
+  email     String
+  mapsEmbed String @db.Text
+}
