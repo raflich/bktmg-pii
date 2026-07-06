@@ -49,9 +49,18 @@ function parseTelepon(teleponStr: string): TeleponItem[] {
   });
 }
 
+interface OfficeInfo {
+  id: string;
+  nama: string;
+  alamat: string;
+  telepon: string;
+  email: string;
+  mapsEmbed: string;
+}
+
 export default async function HubungiKamiPage() {
   // Query offices/sekretariats from database
-  const offices = await prisma.infoInstansi.findMany();
+  const offices = (await prisma.infoInstansi.findMany()) as OfficeInfo[];
 
   return (
     <>
@@ -63,7 +72,7 @@ export default async function HubungiKamiPage() {
 
       <section className="bg-[#FAFAF8] py-16 md:py-24 text-left">
         <div className="max-w-7xl mx-auto px-5 md:px-10 flex flex-col gap-12">
-          {offices.map((office, idx) => {
+          {offices.map((office: OfficeInfo, idx: number) => {
             const teleponItems = parseTelepon(office.telepon);
 
             return (
