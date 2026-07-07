@@ -36,10 +36,12 @@ model Pengurus {
 }
 
 model InfoInstansi {
-  id        String @id @default(uuid())
+  id        String  @id @default(uuid())
   nama      String
-  alamat    String @db.Text
+  alamat    String  @db.Text
   telepon   String
+  whatsapp  String?
   email     String
-  mapsEmbed String @db.Text
+  web       String?
+  mapsEmbed String  @db.Text
 }

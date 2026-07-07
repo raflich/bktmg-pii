@@ -39,7 +39,9 @@ CREATE TABLE "InfoInstansi" (
     "nama" TEXT NOT NULL,
     "alamat" TEXT NOT NULL,
     "telepon" TEXT NOT NULL,
+    "whatsapp" TEXT,
     "email" TEXT NOT NULL,
+    "web" TEXT,
     "mapsEmbed" TEXT NOT NULL
 );
 
@@ -69,6 +71,6 @@ INSERT INTO "Pengurus" ("nama", "jabatan", "kategori", "urutan") VALUES
 ('Data Lengkap di Sekretariat', 'Anggota Tim (9 orang)', 'MUK', 4);
 
 -- 5. Seed data for InfoInstansi
-INSERT INTO "InfoInstansi" ("nama", "alamat", "telepon", "email", "mapsEmbed") VALUES
-('Sekretariat PII Pusat', 'Graha Rekayasa Indonesia Lt. 5, Jl. Halimun Raya No. 39, Guntur, Setiabudi, Jakarta Selatan 12980', '(021) 21481780 / 0812 9393 7552', 'info@pii.or.id', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.0!2d106.840!3d-6.225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTMnMzAuMCJTIDEwNsKwNTAnMjQuMCJF!5e0!3m2!1sen!2sid!4v1620000000000'),
-('Sekretariat BKTMG', 'Jl. Mimosa I No.5, Pejaten Barat, Jakarta Selatan', '(62 21) 7919 7673 / WhatsApp: 0818 794 906', 'pii.bktmg@gmail.com', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.2!2d106.826!3d-6.268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTYnMDQuOCJTIDEwNsKwNDknMjEuNiJF!5e0!3m2!1sen!2sid!4v1620000000001');
+INSERT INTO "InfoInstansi" ("nama", "alamat", "telepon", "whatsapp", "email", "web", "mapsEmbed") VALUES
+('Sekretariat PII Pusat', 'Graha Rekayasa Indonesia Lt. 5, Jl. Halimun Raya No. 39, Guntur, Setiabudi, Jakarta Selatan 12980', '(021) 21481780', '0812 9393 7552', 'info@pii.or.id', 'www.pii.or.id', '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.419646602225!2d106.83025797478311!3d-6.208249560812251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f40e358e8625%3A0x1ec752ed144c880!2sPersatuan%20Insinyur%20Indonesia!5e0!3m2!1sen!2sus!4v1783388354785!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>'),
+('Sekretariat BKTMG', 'Jl. Mimosa I No.5, Pejaten Barat, Jakarta Selatan', '(62 21) 7919 7673', '0818 794 906', 'pii.bktmg@gmail.com', NULL, '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.2625299443214!2d106.82404097478326!3d-6.268688461371077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1d9326e25cb%3A0x4a47cae4d3db269c!2sMimosa%20Pejaten!5e0!3m2!1sen!2sid!4v1783388654321!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>');

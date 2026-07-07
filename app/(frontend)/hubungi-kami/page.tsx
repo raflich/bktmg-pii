@@ -19,48 +19,74 @@ function PageHeader({ tag, title, sub }: { tag: string; title: React.ReactNode; 
   );
 }
 
-interface TeleponItem {
-  icon: React.ReactNode;
-  title: string;
-  text: string;
-  href?: string;
-}
-
-function parseTelepon(teleponStr: string): TeleponItem[] {
-  return teleponStr.split("/").map((part) => {
-    const trimmed = part.trim();
-    if (trimmed.toLowerCase().includes("whatsapp")) {
-      const number = trimmed.replace(/\D/g, "");
-      const waNum = number.startsWith("0") ? "62" + number.slice(1) : number;
-      return {
-        icon: <MessageCircle size={15} />,
-        title: "WhatsApp",
-        text: trimmed,
-        href: `https://wa.me/${waNum}`,
-      };
-    }
-    const digits = trimmed.replace(/\D/g, "");
-    return {
-      icon: <Phone size={15} />,
-      title: "Telepon",
-      text: trimmed,
-      href: digits ? `tel:${digits}` : undefined,
-    };
-  });
-}
-
 interface OfficeInfo {
   id: string;
   nama: string;
   alamat: string;
   telepon: string;
+  whatsapp?: string | null;
   email: string;
+  web?: string | null;
   mapsEmbed: string;
+}
+
+function cleanPhone(phoneStr: string): string {
+  const digits = phoneStr.replace(/\D/g, "");
+  if (digits.startsWith("0")) {
+    return "62" + digits.slice(1);
+  }
+  return digits;
+}
+
+function formatWebLink(webStr: string): string {
+  const trimmed = webStr.trim();
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+  return `https://${trimmed}`;
 }
 
 export default async function HubungiKamiPage() {
   // Query offices/sekretariats from database
   const offices = (await prisma.infoInstansi.findMany()) as OfficeInfo[];
+
+  const renderMap = (iframeStr: string, title: string) => {
+    const trimmed = iframeStr.trim();
+    
+    // If it's a direct URL
+    if (trimmed.startsWith("http")) {
+      return (
+        <iframe
+          title={title}
+          src={trimmed}
+          width="100%"
+          height="100%"
+          style={{ border: 0, minHeight: 300 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      );
+    }
+    
+    // If it's a full <iframe> HTML tag, modify width/height/style to make it fully responsive
+    let processedHtml = trimmed;
+    processedHtml = processedHtml.replace(/width="[^"]*"/g, 'width="100%"');
+    processedHtml = processedHtml.replace(/height="[^"]*"/g, 'height="100%"');
+    processedHtml = processedHtml.replace(/style="[^"]*"/g, 'style="border:0; min-height:300px; width:100%; height:100%;"');
+    
+    // If style attribute is missing, inject it
+    if (!processedHtml.includes("style=")) {
+      processedHtml = processedHtml.replace("<iframe", '<iframe style="border:0; min-height:300px; width:100%; height:100%;"');
+    }
+    
+    return (
+      <div 
+        className="w-full h-full min-h-[300px]"
+        dangerouslySetInnerHTML={{ __html: processedHtml }}
+      />
+    );
+  };
 
   return (
     <>
@@ -73,18 +99,18 @@ export default async function HubungiKamiPage() {
       <section className="bg-[#FAFAF8] py-16 md:py-24 text-left">
         <div className="max-w-7xl mx-auto px-5 md:px-10 flex flex-col gap-12">
           {offices.map((office: OfficeInfo, idx: number) => {
-            const teleponItems = parseTelepon(office.telepon);
+            const telNumbers = office.telepon.split("/").map(t => t.trim());
 
             return (
-              <div key={office.id} className="grid md:grid-cols-2 gap-6 items-start">
+              <div key={office.id} className="grid md:grid-cols-2 gap-6 items-stretch">
                 {/* Info panel */}
-                <div className="rounded-3xl bg-white border border-black/6 overflow-hidden shadow-sm">
+                <div className="rounded-3xl bg-white border border-black/6 overflow-hidden shadow-sm flex flex-col h-full">
                   <div className="px-7 py-5 bg-[#111] flex items-center gap-3">
                     <div className={`w-2.5 h-2.5 rounded-full flex-none ${idx % 2 === 0 ? "bg-[#F97316]" : "bg-white/60"}`} />
                     <h3 className="text-base font-bold text-white"
                       style={{ fontFamily: "var(--font-plus-jakarta), sans-serif" }}>{office.nama}</h3>
                   </div>
-                  <ul className="p-7 flex flex-col gap-5">
+                  <ul className="p-7 flex flex-col gap-5 flex-grow justify-center">
                     {/* Alamat */}
                     <li className="flex items-start gap-3.5">
                       <div className="w-8 h-8 rounded-full bg-[#FFF1E6] flex items-center justify-center text-[#F97316] flex-none mt-0.5">
@@ -98,30 +124,51 @@ export default async function HubungiKamiPage() {
                       </div>
                     </li>
 
-                    {/* Telepon parsed list */}
-                    {teleponItems.map((item, i) => (
-                      <li key={i} className="flex items-start gap-3.5">
+                    {/* Telepon */}
+                    {telNumbers.map((num, i) => {
+                      const cleanNum = num.replace(/\D/g, "");
+                      return (
+                        <li key={i} className="flex items-start gap-3.5">
+                          <div className="w-8 h-8 rounded-full bg-[#FFF1E6] flex items-center justify-center text-[#F97316] flex-none mt-0.5">
+                            <Phone size={15} />
+                          </div>
+                          <div>
+                            <div className="text-[10px] text-[#aaa] font-bold uppercase tracking-wider mb-0.5"
+                              style={{ fontFamily: "var(--font-inter), sans-serif" }}>Telepon {telNumbers.length > 1 ? i + 1 : ""}</div>
+                            {cleanNum ? (
+                              <a href={`tel:${cleanNum}`}
+                                className="text-sm font-semibold text-[#111] hover:text-[#F97316] transition-colors break-all"
+                                style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                                {num}
+                              </a>
+                            ) : (
+                              <span className="text-sm font-semibold text-[#333]"
+                                style={{ fontFamily: "var(--font-inter), sans-serif" }}>{num}</span>
+                            )}
+                          </div>
+                        </li>
+                      );
+                    })}
+
+                    {/* WhatsApp */}
+                    {office.whatsapp && (
+                      <li className="flex items-start gap-3.5">
                         <div className="w-8 h-8 rounded-full bg-[#FFF1E6] flex items-center justify-center text-[#F97316] flex-none mt-0.5">
-                          {item.icon}
+                          <MessageCircle size={15} />
                         </div>
                         <div>
                           <div className="text-[10px] text-[#aaa] font-bold uppercase tracking-wider mb-0.5"
-                            style={{ fontFamily: "var(--font-inter), sans-serif" }}>{item.title}</div>
-                          {item.href ? (
-                            <a href={item.href}
-                              className="text-sm font-semibold text-[#111] hover:text-[#F97316] transition-colors break-all"
-                              style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                              target={item.href.startsWith("http") ? "_blank" : undefined}
-                              rel="noopener noreferrer">
-                              {item.text}
-                            </a>
-                          ) : (
-                            <span className="text-sm font-semibold text-[#333]"
-                              style={{ fontFamily: "var(--font-inter), sans-serif" }}>{item.text}</span>
-                          )}
+                            style={{ fontFamily: "var(--font-inter), sans-serif" }}>WhatsApp</div>
+                          <a href={`https://wa.me/${cleanPhone(office.whatsapp)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-semibold text-[#111] hover:text-[#F97316] transition-colors break-all"
+                            style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                            {office.whatsapp}
+                          </a>
                         </div>
                       </li>
-                    ))}
+                    )}
 
                     {/* Email */}
                     <li className="flex items-start gap-3.5">
@@ -139,8 +186,8 @@ export default async function HubungiKamiPage() {
                       </div>
                     </li>
 
-                    {/* Optional Website Link for PII Pusat */}
-                    {office.nama.toLowerCase().includes("pusat") && (
+                    {/* Website */}
+                    {office.web && (
                       <li className="flex items-start gap-3.5">
                         <div className="w-8 h-8 rounded-full bg-[#FFF1E6] flex items-center justify-center text-[#F97316] flex-none mt-0.5">
                           <Globe size={15} />
@@ -148,12 +195,12 @@ export default async function HubungiKamiPage() {
                         <div>
                           <div className="text-[10px] text-[#aaa] font-bold uppercase tracking-wider mb-0.5"
                             style={{ fontFamily: "var(--font-inter), sans-serif" }}>Website</div>
-                          <a href="https://www.pii.or.id"
+                          <a href={formatWebLink(office.web)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm font-semibold text-[#111] hover:text-[#F97316] transition-colors break-all"
                             style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                            www.pii.or.id
+                            {office.web}
                           </a>
                         </div>
                       </li>
@@ -161,17 +208,9 @@ export default async function HubungiKamiPage() {
                   </ul>
                 </div>
 
-                {/* Map */}
-                <div className="rounded-3xl overflow-hidden h-72 md:h-full min-h-[300px] border border-black/6 shadow-sm">
-                  <iframe
-                    title={office.nama}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0, minHeight: 300 }}
-                    loading="lazy"
-                    allowFullScreen
-                    src={office.mapsEmbed}
-                  />
+                {/* Map Grid Container */}
+                <div className="rounded-3xl overflow-hidden border border-black/6 shadow-sm bg-white h-full min-h-[300px] flex items-center justify-center">
+                  {renderMap(office.mapsEmbed, office.nama)}
                 </div>
               </div>
             );
@@ -199,12 +238,14 @@ export default async function HubungiKamiPage() {
               <a href="mailto:pii.bktmg@gmail.com"
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#F97316] text-white font-bold text-sm hover:bg-[#e96200] transition-colors"
                 style={{ fontFamily: "var(--font-plus-jakarta), sans-serif" }}>
-                <Mail size={14} /> Email BKTMG
+                Kirim Email <Mail size={14} />
               </a>
-              <a href="https://wa.me/62818794906" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/20 text-white font-semibold text-sm hover:border-[#F97316]/60 transition-colors"
+              <a href="https://wa.me/62818794906"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/20 text-white font-semibold text-sm hover:border-white/40 transition-colors"
                 style={{ fontFamily: "var(--font-plus-jakarta), sans-serif" }}>
-                <MessageCircle size={14} /> WhatsApp BKTMG
+                Hubungi WhatsApp <MessageCircle size={14} />
               </a>
             </div>
           </div>
