@@ -11,6 +11,7 @@ export default function ContactForm() {
     perusahaan: "",
     institusi: "",
     pesan: "",
+    website: "", // Honeypot!
   });
 
   const [status, setStatus] = useState<{
@@ -55,6 +56,7 @@ export default function ContactForm() {
         perusahaan: "",
         institusi: "",
         pesan: "",
+        website: "",
       });
     } catch (err: any) {
       setStatus({
@@ -88,6 +90,19 @@ export default function ContactForm() {
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {/* Honeypot field - hidden from humans but filled by spam bots */}
+        <div className="absolute opacity-0 pointer-events-none -z-10 w-0 h-0 overflow-hidden">
+          <label>Leave this field blank</label>
+          <input
+            type="text"
+            name="website"
+            value={formData.website}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
+
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-bold text-[#333] uppercase tracking-wider mb-2">
