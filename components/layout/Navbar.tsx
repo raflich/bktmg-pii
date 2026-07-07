@@ -80,8 +80,8 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-[#F97316] flex items-center justify-center shadow-md shadow-[#F97316]/30 flex-none group-hover:scale-105 transition-transform duration-300">
-            <span className="text-white font-black text-[10px] leading-none text-center">BK<br />TMG</span>
+          <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white flex-none group-hover:scale-105 transition-transform duration-300 shadow-sm border border-black/5">
+            <img src="/logo-pii.jpg" alt="PII Logo" className="w-full h-full object-cover" />
           </div>
           <div style={{ fontFamily: "var(--font-plus-jakarta-sans), sans-serif" }}>
             <div className={cn("text-sm font-black leading-tight transition-colors duration-300", logoText)}>

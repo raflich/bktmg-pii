@@ -30,8 +30,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-[#F97316] flex items-center justify-center flex-none">
-                <span className="text-white font-black text-[10px] text-center leading-tight">BK<br />TMG</span>
+              <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white flex-none border border-white/10">
+                <img src="/logo-pii.jpg" alt="PII Logo" className="w-full h-full object-cover" />
               </div>
               <div style={{ fontFamily: "var(--font-plus-jakarta), sans-serif" }}>
                 <div className="text-sm font-black text-white leading-tight">BK TMG – PII</div>

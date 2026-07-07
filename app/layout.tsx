@@ -17,6 +17,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "BKTMG - PII",
   description: "Badan Kejuruan Teknik Perminyakan & Panas Bumi - Persatuan Insinyur Indonesia",
+  icons: {
+    icon: "/logo-pii.jpg",
+  },
 };
 
 export default function RootLayout({
