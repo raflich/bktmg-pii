@@ -21,6 +21,14 @@ export default function ContactForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+
+    if (name === "noTelepon") {
+      // Remove all non-digit characters
+      const numericValue = value.replace(/\D/g, "");
+      setFormData((prev) => ({ ...prev, [name]: numericValue }));
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
