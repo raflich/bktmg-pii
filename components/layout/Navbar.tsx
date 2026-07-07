@@ -49,8 +49,8 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // transparent with white text only on home + not scrolled
-  const transparent = isHome && !scrolled;
+  // transparent with white text on all pages when at the top (over dark headers)
+  const transparent = !scrolled;
 
   const NAV = [
     { label: "Beranda", to: "/" },
