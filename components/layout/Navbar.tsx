@@ -79,18 +79,19 @@ export default function Navbar() {
         )}
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white flex-none group-hover:scale-105 transition-transform duration-300 shadow-sm border border-black/5">
-            <img src="/logo-pii.jpg" alt="PII Logo" className="w-full h-full object-cover" />
+        <Link href="/" className="flex items-center gap-3.5 group">
+          <div className={cn(
+            "h-11 w-auto aspect-[3/4] overflow-hidden flex items-center justify-center bg-white flex-none group-hover:scale-105 transition-transform duration-300 border",
+            transparent ? "border-white/20" : "border-black/10"
+          )}>
+            <img src="/logo-pii.jpg" alt="PII Logo" className="h-full w-auto object-contain" />
           </div>
-          <div style={{ fontFamily: "var(--font-plus-jakarta-sans), sans-serif" }}>
-            <div className={cn("text-sm font-black leading-tight transition-colors duration-300", logoText)}>
-              BK TMG – PII
-            </div>
-            <div className={cn("text-[10px] leading-none font-medium transition-colors duration-300", logoSub)}>
-              Persatuan Insinyur Indonesia
-            </div>
-          </div>
+          <span 
+            className={cn("text-lg font-extrabold tracking-wide uppercase transition-colors duration-300", logoText)}
+            style={{ fontFamily: "var(--font-plus-jakarta-sans), sans-serif" }}
+          >
+            BK TMG - PII
+          </span>
         </Link>
 
         {/* Desktop nav links */}

@@ -29,14 +29,16 @@ export default function Footer() {
         <div className="grid md:grid-cols-5 gap-10 mb-12">
           {/* Brand */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white flex-none border border-white/10">
-                <img src="/logo-pii.jpg" alt="PII Logo" className="w-full h-full object-cover" />
+            <div className="flex items-center gap-3.5 mb-5">
+              <div className="h-11 w-auto aspect-[3/4] overflow-hidden flex items-center justify-center bg-white flex-none border border-white/10">
+                <img src="/logo-pii.jpg" alt="PII Logo" className="h-full w-auto object-contain" />
               </div>
-              <div style={{ fontFamily: "var(--font-plus-jakarta), sans-serif" }}>
-                <div className="text-sm font-black text-white leading-tight">BK TMG – PII</div>
-                <div className="text-[10px] text-[#666] leading-none">Persatuan Insinyur Indonesia</div>
-              </div>
+              <span 
+                className="text-lg font-extrabold tracking-wide uppercase text-white"
+                style={{ fontFamily: "var(--font-plus-jakarta), sans-serif" }}
+              >
+                BK TMG - PII
+              </span>
             </div>
             <p className="text-[#666] text-sm leading-relaxed mb-5" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
               Asosiasi profesi nirlaba wadah insinyur teknik perminyakan dan panas bumi
