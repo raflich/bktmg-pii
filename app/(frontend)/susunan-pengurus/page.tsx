@@ -82,7 +82,7 @@ export default async function SusunanPengurusPage() {
       <PageHeader
         tag="Kepengurusan"
         title={<>Susunan Pengurus<br /><span className="text-[#F97316]">Masa Bakti 2026 – 2029</span></>}
-        sub="Daftar lengkap Dewan Pembina, Dewan Penasehat, Pengurus Inti/Harian, dan Majelis Uji Kompetensi BKTMG-PII periode 2026–2029."
+        sub="Daftar lengkap Dewan Pembina, Dewan Penasehat, Pengurus Badan Keahlian, dan Majelis Uji Kompetensi BKTMG-PII periode 2026–2029."
       />
 
       <section className="bg-[#FAFAF8] py-16 md:py-24">
@@ -104,9 +104,9 @@ export default async function SusunanPengurusPage() {
             </Card>
           </div>
 
-          {/* Pengurus Inti & MUK */}
+          {/* Pengurus Badan Keahlian & MUK */}
           <div className="grid md:grid-cols-2 gap-6">
-            <Card title="Pengurus Inti / Harian">
+            <Card title="Pengurus Badan Keahlian">
               <div className="flex flex-col gap-4">
                 {inti.map((p) => (
                   <MemberRow key={p.id} jabatan={p.jabatan} nama={p.nama} />

@@ -33,7 +33,7 @@ export default function Footer() {
               <div className="h-11 w-auto aspect-[3/4] overflow-hidden flex items-center justify-center bg-white flex-none border border-white/10">
                 <img src="/logo-pii.jpg" alt="PII Logo" className="h-full w-auto object-contain" />
               </div>
-              <span 
+              <span
                 className="text-lg font-extrabold tracking-wide uppercase text-white"
                 style={{ fontFamily: "var(--font-plus-jakarta), sans-serif" }}
               >
@@ -46,9 +46,9 @@ export default function Footer() {
             </p>
             <div className="flex gap-3">
               {[
-                { Icon: Youtube, href: "#" },
-                { Icon: Instagram, href: "#" },
-                { Icon: Linkedin, href: "#" },
+                { Icon: Youtube, href: "https://www.youtube.com/@BKTMG-PII" },
+                { Icon: Instagram, href: "https://www.instagram.com/piibktmg" },
+                { Icon: Linkedin, href: "https://www.linkedin.com/in/bktmg-pii-882b82417" },
               ].map(({ Icon, href }, i) => (
                 <a
                   key={i}
