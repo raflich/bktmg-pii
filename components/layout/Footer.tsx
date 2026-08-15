@@ -53,6 +53,8 @@ export default function Footer() {
                 <a
                   key={i}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-9 h-9 rounded-full bg-white/8 hover:bg-[#F97316] flex items-center justify-center text-[#888] hover:text-white transition-colors"
                 >
                   <Icon size={15} />
