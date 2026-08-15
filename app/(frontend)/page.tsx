@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Network, Star, Zap, Award, ChevronRight } from "lucide-react";
 import prisma from "@/lib/prisma";
 import GalleryScroll from "@/components/sections/GalleryScroll";
+import AnnouncementModal from "@/components/sections/AnnouncementModal";
 
 const IMG = {
   hero1:    "https://images.unsplash.com/photo-1588011930968-eadac80e6a5a?w=800&h=1000&fit=crop&auto=format",
@@ -254,6 +255,7 @@ export default async function Beranda() {
 
   return (
     <>
+      <AnnouncementModal />
       <Hero />
       <ProfilVisiMisi />
       <GalleryScroll kegiatan={kegiatan} />
