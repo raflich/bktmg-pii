@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Users } from "lucide-react";
+import { User } from "lucide-react";
 
 /* ── Page header shared ── */
 function PageHeader({ tag, title, sub }: { tag: string; title: React.ReactNode; sub: string }) {
@@ -22,8 +22,7 @@ function PageHeader({ tag, title, sub }: { tag: string; title: React.ReactNode; 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-3xl bg-white border border-black/6 overflow-hidden shadow-sm text-left">
-      <div className="px-7 py-5 bg-[#111] flex items-center gap-3">
-        <div className="w-2 h-6 rounded-full bg-[#F97316]" />
+      <div className="px-7 py-5 bg-[#222] flex items-center">
         <h3 className="text-base font-bold text-white"
           style={{ fontFamily: "var(--font-plus-jakarta), sans-serif" }}>{title}</h3>
       </div>
@@ -37,7 +36,7 @@ function MemberRow({ jabatan, nama }: { jabatan: string; nama: string }) {
     <div className="border-b border-black/5 pb-4 last:border-0 last:pb-0 text-left">
       <div className="text-[11px] text-[#F97316] font-bold uppercase tracking-wider mb-1"
         style={{ fontFamily: "var(--font-inter), sans-serif" }}>{jabatan}</div>
-      <div className="text-[#111] text-sm font-semibold"
+      <div className="text-[#111] text-sm font-semibold leading-relaxed"
         style={{ fontFamily: "var(--font-inter), sans-serif" }}>{nama}</div>
     </div>
   );
@@ -47,7 +46,7 @@ function AvatarRow({ nama }: { nama: string }) {
   return (
     <li className="flex items-center gap-3 text-left">
       <div className="w-9 h-9 rounded-full bg-[#FFF1E6] flex items-center justify-center text-[#F97316] flex-none">
-        <Users size={15} />
+        <User size={15} />
       </div>
       <span className="text-[#333] text-sm font-semibold"
         style={{ fontFamily: "var(--font-inter), sans-serif" }}>{nama}</span>
@@ -77,6 +76,14 @@ export default async function SusunanPengurusPage() {
   const inti = allPengurus.filter((p: PengurusMember) => p.kategori === "Inti");
   const muk = allPengurus.filter((p: PengurusMember) => p.kategori === "MUK");
 
+  // Split Pengurus Badan Keahlian into Left and Right Columns
+  const intiKiri = inti.slice(0, 10);
+  const intiKanan = inti.slice(10);
+
+  // Split MUK into Pimpinan and Anggota
+  const mukPimpinan = muk.filter((p: PengurusMember) => p.jabatan !== "Anggota Tim MUK");
+  const mukAnggota = muk.filter((p: PengurusMember) => p.jabatan === "Anggota Tim MUK");
+
   return (
     <>
       <PageHeader
@@ -91,45 +98,71 @@ export default async function SusunanPengurusPage() {
           {/* Pembina & Penasehat */}
           <div className="grid md:grid-cols-2 gap-6">
             <Card title="Dewan Pembina">
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-4">
                 {pembina.map(p => <AvatarRow key={p.id} nama={p.nama} />)}
                 {pembina.length === 0 && <span className="text-sm text-[#888]">Belum ada data</span>}
               </ul>
             </Card>
             <Card title="Dewan Penasehat">
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-4">
                 {penasehat.map(p => <AvatarRow key={p.id} nama={p.nama} />)}
                 {penasehat.length === 0 && <span className="text-sm text-[#888]">Belum ada data</span>}
               </ul>
             </Card>
           </div>
 
-          {/* Pengurus Badan Keahlian & MUK */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <Card title="Pengurus Badan Keahlian">
+          {/* Pengurus Badan Keahlian (Full Width) */}
+          <Card title="Pengurus Badan Keahlian">
+            <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+              {/* Left Column */}
               <div className="flex flex-col gap-4">
-                {inti.map((p) => (
+                {intiKiri.map((p) => (
                   <MemberRow key={p.id} jabatan={p.jabatan} nama={p.nama} />
                 ))}
-                {inti.length === 0 && <span className="text-sm text-[#888]">Belum ada data</span>}
+                {intiKiri.length === 0 && <span className="text-sm text-[#888]">Belum ada data</span>}
               </div>
-            </Card>
-            <Card title="Majelis Uji Kompetensi (MUK)">
+              
+              {/* Right Column */}
               <div className="flex flex-col gap-4">
-                {muk.map((p) => (
+                {intiKanan.map((p) => (
                   <MemberRow key={p.id} jabatan={p.jabatan} nama={p.nama} />
                 ))}
-                {muk.length === 0 && <span className="text-sm text-[#888]">Belum ada data</span>}
+                {intiKanan.length === 0 && <span className="text-sm text-[#888]">Belum ada data</span>}
               </div>
-              <div className="mt-6 p-4 rounded-2xl bg-[#FFF1E6] border border-[#F97316]/20">
-                <p className="text-xs text-[#F97316] font-semibold leading-relaxed"
+            </div>
+          </Card>
+
+          {/* Majelis Uji Kompetensi (MUK) (Full Width) */}
+          <Card title="Majelis Uji Kompetensi (MUK)">
+            <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+              {/* Left Column - Pimpinan */}
+              <div className="flex flex-col gap-4">
+                {mukPimpinan.map((p) => (
+                  <MemberRow key={p.id} jabatan={p.jabatan} nama={p.nama} />
+                ))}
+                {mukPimpinan.length === 0 && <span className="text-sm text-[#888]">Belum ada data</span>}
+              </div>
+
+              {/* Right Column - Anggota */}
+              <div>
+                <div className="text-[11px] text-[#F97316] font-bold uppercase tracking-wider mb-3"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                  Tim MUK terdiri dari 1 Ketua, 1 Wakil Ketua, 1 Sekretaris, dan 9 Anggota.
-                  Untuk informasi lengkap, silakan hubungi Sekretariat BKTMG.
-                </p>
+                  ANGGOTA TIM MUK
+                </div>
+                <ul className="flex flex-col gap-2">
+                  {mukAnggota.map((p) => (
+                    <li key={p.id} className="text-[#111] text-sm font-semibold flex items-start gap-2"
+                      style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                      <span className="text-[#F97316] flex-none">•</span>
+                      <span>{p.nama}</span>
+                    </li>
+                  ))}
+                  {mukAnggota.length === 0 && <span className="text-sm text-[#888]">Belum ada data</span>}
+                </ul>
               </div>
-            </Card>
-          </div>
+            </div>
+          </Card>
+
         </div>
       </section>
     </>

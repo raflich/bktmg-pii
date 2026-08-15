@@ -46,9 +46,9 @@ export default function Footer() {
             </p>
             <div className="flex gap-3">
               {[
-                { Icon: Youtube, href: "https://www.youtube.com/@BKTMG-PII" },
-                { Icon: Instagram, href: "https://www.instagram.com/piibktmg" },
-                { Icon: Linkedin, href: "https://www.linkedin.com/in/bktmg-pii-882b82417" },
+                { Icon: Youtube, href: "https://www.youtube.com/@BKTMG-PII", external: true },
+                { Icon: Instagram, href: "https://www.instagram.com/piibktmg", external: true },
+                { Icon: Linkedin, href: "https://www.linkedin.com/in/bktmg-pii-882b82417", external: true },
               ].map(({ Icon, href }, i) => (
                 <a
                   key={i}
