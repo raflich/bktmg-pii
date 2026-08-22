@@ -3,10 +3,16 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
+// Set to true to enable the popup, or false to disable it
+const IS_ANNOUNCEMENT_ACTIVE = false;
+
 export default function AnnouncementModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
+    // Do not show popup if feature is disabled
+    if (!IS_ANNOUNCEMENT_ACTIVE) return;
+
     // Check session storage so it doesn't show on every single page refresh during the session
     const isClosed = sessionStorage.getItem("bktmg_popup_closed");
     if (!isClosed) {
@@ -22,7 +28,7 @@ export default function AnnouncementModal() {
     sessionStorage.setItem("bktmg_popup_closed", "true");
   };
 
-  if (!isOpen) return null;
+  if (!IS_ANNOUNCEMENT_ACTIVE || !isOpen) return null;
 
   return (
     <div 
