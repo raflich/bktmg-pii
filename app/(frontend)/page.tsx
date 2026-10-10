@@ -247,11 +247,16 @@ interface HomeKegiatan {
 }
 
 export default async function Beranda() {
-  const kegiatan = (await prisma.kegiatan.findMany({
-    orderBy: {
-      tanggal: "desc",
-    },
-  })) as HomeKegiatan[];
+  let kegiatan: HomeKegiatan[] = [];
+  try {
+    kegiatan = (await prisma.kegiatan.findMany({
+      orderBy: {
+        tanggal: "desc",
+      },
+    })) as HomeKegiatan[];
+  } catch (error) {
+    console.warn("Notice: Database connection offline or empty, falling back to empty kegiatan list.");
+  }
 
   return (
     <>
