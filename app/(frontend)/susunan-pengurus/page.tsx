@@ -65,16 +65,11 @@ interface PengurusMember {
 
 export default async function SusunanPengurusPage() {
   // Fetch members from database
-  let allPengurus: PengurusMember[] = [];
-  try {
-    allPengurus = (await prisma.pengurus.findMany({
-      orderBy: {
-        urutan: "asc",
-      },
-    })) as PengurusMember[];
-  } catch (error) {
-    console.warn("Notice: Database connection offline or empty, falling back to empty pengurus list.");
-  }
+  const allPengurus = (await prisma.pengurus.findMany({
+    orderBy: {
+      urutan: "asc",
+    },
+  })) as PengurusMember[];
 
   const pembina = allPengurus.filter((p: PengurusMember) => p.kategori === "Pembina");
   const penasehat = allPengurus.filter((p: PengurusMember) => p.kategori === "Penasehat");

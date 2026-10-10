@@ -46,16 +46,11 @@ interface KegiatanEvent {
 }
 
 export default async function KegiatanPage() {
-  let events: KegiatanEvent[] = [];
-  try {
-    events = (await prisma.kegiatan.findMany({
-      orderBy: {
-        tanggal: "desc",
-      },
-    })) as KegiatanEvent[];
-  } catch (error) {
-    console.warn("Notice: Database connection offline or empty, falling back to empty events list.");
-  }
+  const events = (await prisma.kegiatan.findMany({
+    orderBy: {
+      tanggal: "desc",
+    },
+  })) as KegiatanEvent[];
 
   return (
     <>
